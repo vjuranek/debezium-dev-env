@@ -1,0 +1,28 @@
+---
+# Create Debezium user
+
+- name: Install required packages for further steps
+  dnf:
+    name:
+      - python3-libselinux
+    state: latest
+
+- name: Create Debezium user
+  user:
+    name: debezium
+    password: "{{ 'redhat' | password_hash('sha512') }}"
+    home: /home/debezium
+    uid: 1001
+
+- name: Allow debezium user to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: 'debezium ALL=(ALL) NOPASSWD: ALL'
+
+- name: Allow debezium user to have passwordless sudo even from notty terminals
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^Defaults'
+    line: 'Defaults !requiretty'
