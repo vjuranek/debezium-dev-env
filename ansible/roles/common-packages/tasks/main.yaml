@@ -1,0 +1,10 @@
+---
+# Install  common packages
+
+- name: Install basic packages
+  dnf:
+    name:
+      - curl
+      - unzip
+      - wget
+    state: latest
