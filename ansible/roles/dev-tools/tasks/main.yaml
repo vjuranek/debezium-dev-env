@@ -1,0 +1,41 @@
+---
+# Install dev tools
+
+- name: Install dev packages
+  dnf:
+    name:
+      - git
+      - java-17-openjdk-devel
+    state: latest
+
+- name: Create Maven directory
+  file:
+    path: "{{ tools_dir }}"
+    state: directory
+    owner: debezium
+    group: debezium
+    mode: 0775
+    
+- name: Install Maven
+  ansible.builtin.unarchive:
+    src: "https://archive.apache.org/dist/maven/maven-3/{{ maven_version }}/binaries/apache-maven-{{ maven_version }}-bin.tar.gz"
+    dest: "{{ tools_dir }}"
+    remote_src: yes
+
+- name: Create Maven simlink
+  file:
+    src: "{{ tools_dir }}/apache-maven-{{ maven_version }}"
+    dest: "{{ tools_dir }}/maven"
+    state: link
+    owner: debezium
+    group: debezium
+    mode: 0775
+
+# TODO: should be in the dbz-user role and here we should only append to the file
+- name: Copy bash profile
+  ansible.builtin.template:
+    src=env/bash_profile.j2
+    dest=/home/debezium/.bash_profile
+    owner=debezium
+    group=debezium
+    mode=0644

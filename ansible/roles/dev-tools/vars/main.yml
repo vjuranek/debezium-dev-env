@@ -1,0 +1,4 @@
+---
+# vars file for dev tools
+tools_dir: /opt/tools
+maven_version: 3.8.4
