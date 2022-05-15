@@ -1,0 +1,8 @@
+---
+- hosts: packer
+  gather_facts: yes
+  become: yes
+  roles:
+    - ../roles/dbz-user
+    - ../roles/common-packages
+    - ../roles/dev-tools
