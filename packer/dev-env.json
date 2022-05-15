@@ -1,0 +1,21 @@
+{
+    "variables": {
+        "playbook_file": "../ansible/playbooks/dev-env.yaml"
+    },
+    
+    "builders": [
+	{
+	    "type": "docker",
+	    "image": "fedora",
+	    "commit": true
+	}
+    ],
+    
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "{{user `playbook_file`}}",
+	    "groups": ["packer"] 
+        }
+    ]
+}
